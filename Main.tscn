@@ -1,0 +1,161 @@
+[gd_scene load_steps=8 format=3 uid="uid://cb48luoaoyr4g"]
+
+[ext_resource type="Script" uid="uid://bvqmi68entsxf" path="res://main.gd" id="1_uu6xs"]
+[ext_resource type="Texture2D" uid="uid://dr1fnhnpyrvs" path="res://CardImages/Background.png" id="2_r0du0"]
+[ext_resource type="Script" uid="uid://w2v3i1xt3stj" path="res://popup_panel.gd" id="2_uu6xs"]
+[ext_resource type="Texture2D" uid="uid://bb65pca6bq03s" path="res://CardImages/Base Indicator.png" id="4_3dxm6"]
+[ext_resource type="Texture2D" uid="uid://ch4vy33j01n3m" path="res://CardImages/Base.png" id="5_lgr22"]
+[ext_resource type="Texture2D" uid="uid://ctenr74bro24c" path="res://CardImages/HomeBase.png" id="6_trn2v"]
+[ext_resource type="Texture2D" uid="uid://2qmkaltli438" path="res://CardImages/BatSideCollumn.png" id="7_lgr22"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_uu6xs")
+
+[node name="GameArea" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="GameArea"]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_r0du0")
+
+[node name="BottomPanel" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 324.0
+offset_top = -280.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="PlayerHand" type="HBoxContainer" parent="BottomPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = 140.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="InfoPopup" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+script = ExtResource("2_uu6xs")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InfoPopup"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Title" type="Label" parent="InfoPopup/VBoxContainer"]
+layout_mode = 2
+
+[node name="Description" type="Label" parent="InfoPopup/VBoxContainer"]
+layout_mode = 2
+
+[node name="InfoPanel" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 291.0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InfoPanel"]
+top_level = true
+visibility_layer = 3
+layout_mode = 2
+
+[node name="Play" type="Label" parent="InfoPanel/VBoxContainer"]
+layout_mode = 2
+text = "Play"
+horizontal_alignment = 1
+
+[node name="PlayButton" type="Button" parent="InfoPanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+text = "Swing
+"
+
+[node name="Discard" type="Label" parent="InfoPanel/VBoxContainer"]
+layout_mode = 2
+text = "
+Discard"
+horizontal_alignment = 1
+
+[node name="DiscardButton" type="Button" parent="InfoPanel/VBoxContainer"]
+custom_minimum_size = Vector2(120, 60)
+layout_mode = 2
+text = "Take Pitch
+"
+
+[node name="BoxContainer" type="BoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.875
+anchor_right = 1.0
+anchor_bottom = 0.228
+offset_left = -17.0001
+offset_bottom = 22.76
+grow_horizontal = 0
+
+[node name="BasesField" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+offset_left = 1520.0
+offset_right = 1920.0
+offset_bottom = 400.0
+texture = ExtResource("4_3dxm6")
+expand_mode = 1
+
+[node name="Bases" type="Node2D" parent="."]
+position = Vector2(2227, 206)
+
+[node name="FirstBase" type="Sprite2D" parent="Bases"]
+position = Vector2(-394, 13)
+texture = ExtResource("5_lgr22")
+
+[node name="SecondBase" type="Sprite2D" parent="Bases"]
+position = Vector2(-507, -95)
+texture = ExtResource("5_lgr22")
+
+[node name="ThirdBase" type="Sprite2D" parent="Bases"]
+position = Vector2(-622, 15)
+texture = ExtResource("5_lgr22")
+
+[node name="HomeBase" type="Sprite2D" parent="Bases"]
+position = Vector2(-505, 141)
+texture = ExtResource("6_trn2v")
+
+[node name="Outcome" type="Label" parent="."]
+layout_mode = 0
+offset_left = 948.0
+offset_top = 83.0
+offset_right = 988.0
+offset_bottom = 106.0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 290.0
+offset_bottom = 1080.0
+texture = ExtResource("7_lgr22")
+
+[connection signal="pressed" from="InfoPanel/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]

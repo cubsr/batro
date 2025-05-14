@@ -1,0 +1,74 @@
+[gd_scene load_steps=4 format=3 uid="uid://rrcsvv2vp447"]
+
+[ext_resource type="Script" uid="uid://c2pmbupdd1eor" path="res://card.gd" id="1_hael8"]
+[ext_resource type="LabelSettings" uid="uid://d2wv2sgac44qa" path="res://Readable.tres" id="2_hael8"]
+[ext_resource type="Texture2D" uid="uid://ly2hnpun3jsm" path="res://CardImages/card3.png" id="3_21rx5"]
+
+[node name="Card" type="Control"]
+custom_minimum_size = Vector2(200, 290)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 128.0
+offset_bottom = 192.0
+script = ExtResource("1_hael8")
+
+[node name="HighlightOverlay" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.188235, 1, 1, 1)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.999999, 0.996903, 0.747954, 1)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(256, 384)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_21rx5")
+expand_mode = 5
+
+[node name="TextBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = 225.0
+offset_right = -23.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="TextBox"]
+layout_mode = 2
+text = "test"
+label_settings = ExtResource("2_hael8")
+
+[node name="Control" type="Control" parent="TextBox"]
+layout_mode = 2
+
+[node name="Description" type="Label" parent="TextBox"]
+z_index = 1
+layout_mode = 2
+text = "test"
+label_settings = ExtResource("2_hael8")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
