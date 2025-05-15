@@ -58,7 +58,6 @@ grow_vertical = 2
 
 [node name="Title" type="Label" parent="TextBox"]
 layout_mode = 2
-text = "test"
 label_settings = ExtResource("2_hael8")
 
 [node name="Control" type="Control" parent="TextBox"]
@@ -67,7 +66,6 @@ layout_mode = 2
 [node name="Description" type="Label" parent="TextBox"]
 z_index = 1
 layout_mode = 2
-text = "test"
 label_settings = ExtResource("2_hael8")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

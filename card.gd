@@ -7,7 +7,7 @@ signal hide_popup()
 @onready var titleLable: Label = $TextBox/Title
 @onready var desc: Label = $TextBox/Description
 @onready var highlight_overlay: ColorRect = $HighlightOverlay
-var dataReady = false
+
 
 var hovered: Tween
 var hovered_scale = Vector2(1.1, 1.1)
@@ -16,26 +16,28 @@ var lift_offset = Vector2(0, -20)
 var original_position = Vector2()
 var is_selected = false
 
+
+var title := ""
+var description := ""
 var hitChance = 50
 var homerChance = 10
 
 func _ready():
-	titleLable = $TextBox/Title
-	desc = $TextBox/Description
-	highlight_overlay = $HighlightOverlay
 	hovered = get_tree().create_tween()
 	original_position = position
-	dataReady = true
+	update_ui()
 
-func set_card_data(cardDictionary: Dictionary) -> void:
-	if cardDictionary.has("title"):
-		titleLable.text = cardDictionary["title"]
-	if cardDictionary.has("description"):
-		desc.text = cardDictionary["description"]
-	if cardDictionary.has("Hit"):
-		hitChance = cardDictionary["Hit"]
-	if cardDictionary.has("Homer"):
-		homerChance = cardDictionary["Homer"]
+func set_card_data(inputTitle: String, inputDesc: String, inputHit: int, inputHomer: int) -> void:
+	title = inputTitle
+	description = inputDesc
+	hitChance = inputHit
+	homerChance = inputHomer
+	update_ui()
+		
+func update_ui():
+	if titleLable and desc:
+		titleLable.text = title
+		desc.text = description
 
 func _on_mouse_entered():
 	move_to_front()
