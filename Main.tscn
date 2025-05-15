@@ -158,4 +158,15 @@ offset_right = 290.0
 offset_bottom = 1080.0
 texture = ExtResource("7_lgr22")
 
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 907.702
+offset_top = 359.084
+offset_right = 947.702
+offset_bottom = 399.084
+rotation = -0.0190196
+scale = Vector2(4.31499, 2.25563)
+text = "Sup."
+fit_content = true
+
 [connection signal="pressed" from="InfoPanel/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
