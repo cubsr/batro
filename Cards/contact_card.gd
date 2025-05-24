@@ -1,9 +1,26 @@
 extends BaseCard
 class_name ContactCard
-func _ready():
-	super._ready()  # If needed
+var zonesHits: Dictionary = {}
 
-func create_card() -> void:
-	var descString = "+50% to hit"
+func _ready():
+	super._ready()
+
+func create_card() -> Dictionary:
+	var zonesWithHitTypes := {}
 	var titleString = "Contact Swing"
-	super.set_card_data(titleString, descString, 50,50)
+	var center = randi() % 9
+	zonesWithHitTypes[center] = "Single"
+	var neighbors = super._get_adjacent_indexes(center)
+	neighbors.shuffle()
+	
+	for i in range(2):
+		if neighbors.size() > i:
+			zonesWithHitTypes[neighbors[i]] = "Single"
+	super.set_card_data(titleString, "", zonesWithHitTypes)
+	zonesHits = zonesWithHitTypes
+	return zonesWithHitTypes
+	
+func create_card_from_values(zonesWithHitTypes: Dictionary) -> void:
+	var titleString = "Contact Swing"
+	zonesHits = zonesWithHitTypes
+	super.set_card_data(titleString, "", zonesWithHitTypes)

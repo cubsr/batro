@@ -145,6 +145,34 @@ texture = ExtResource("5_lgr22")
 position = Vector2(-505, 141)
 texture = ExtResource("6_trn2v")
 
+[node name="FirstColor" type="ColorRect" parent="Bases"]
+offset_left = -400.0
+offset_top = -44.0
+offset_right = -384.0
+offset_bottom = -27.0
+color = Color(0.117647, 1, 0, 1)
+
+[node name="FirstColor2" type="ColorRect" parent="Bases"]
+offset_left = -515.0
+offset_top = 83.0
+offset_right = -499.0
+offset_bottom = 100.0
+color = Color(1, 0.501961, 0, 1)
+
+[node name="FirstColor3" type="ColorRect" parent="Bases"]
+offset_left = -630.0
+offset_top = -42.0
+offset_right = -614.0
+offset_bottom = -25.0
+color = Color(0.639216, 0.207843, 0.933333, 1)
+
+[node name="FirstColor4" type="ColorRect" parent="Bases"]
+offset_left = -515.0
+offset_top = -149.0
+offset_right = -499.0
+offset_bottom = -132.0
+color = Color(0, 0.439216, 1, 1)
+
 [node name="Outcome" type="Label" parent="."]
 layout_mode = 0
 offset_left = 948.0
@@ -168,5 +196,67 @@ rotation = -0.0190196
 scale = Vector2(4.31499, 2.25563)
 text = "Sup."
 fit_content = true
+
+[node name="SwingGrid" type="GridContainer" parent="."]
+custom_minimum_size = Vector2(240, 360)
+offset_left = 1166.0
+offset_top = 18.0
+offset_right = 1429.0
+offset_bottom = 386.0
+columns = 3
+
+[node name="topLeft" type="ColorRect" parent="SwingGrid"]
+custom_minimum_size = Vector2(80, 120)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.687215, 0.687215, 0.687215, 1)
+
+[node name="topMiddle" type="ColorRect" parent="SwingGrid"]
+custom_minimum_size = Vector2(80, 30)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.686275, 0.686275, 0.686275, 1)
+
+[node name="topRight" type="ColorRect" parent="SwingGrid"]
+custom_minimum_size = Vector2(80, 30)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.686275, 0.686275, 0.686275, 1)
+
+[node name="midLeft" type="ColorRect" parent="SwingGrid"]
+custom_minimum_size = Vector2(30, 120)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.686275, 0.686275, 0.686275, 1)
+
+[node name="midMid" type="ColorRect" parent="SwingGrid"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.686275, 0.686275, 0.686275, 1)
+
+[node name="midRight" type="ColorRect" parent="SwingGrid"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.686275, 0.686275, 0.686275, 1)
+
+[node name="botLeft" type="ColorRect" parent="SwingGrid"]
+custom_minimum_size = Vector2(30, 120)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.686275, 0.686275, 0.686275, 1)
+
+[node name="botMid" type="ColorRect" parent="SwingGrid"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.686275, 0.686275, 0.686275, 1)
+
+[node name="botRight" type="ColorRect" parent="SwingGrid"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.686275, 0.686275, 0.686275, 1)
 
 [connection signal="pressed" from="InfoPanel/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
