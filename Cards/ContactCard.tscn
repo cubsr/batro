@@ -1,12 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://b5m257t436hg2"]
+[gd_scene load_steps=3 format=3 uid="uid://53huot2gcg06"]
 
-[ext_resource type="Script" uid="uid://bwon1g41lvpyp" path="res://Cards/contact_card.gd" id="1_g2k01"]
+[ext_resource type="PackedScene" uid="uid://rrcsvv2vp447" path="res://Card.tscn" id="1_g2k01"]
+[ext_resource type="Script" uid="uid://bid88l1xbeqq6" path="res://Cards/contact_card.gd" id="2_fwbl3"]
 
-[node name="ContactCard" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_g2k01")
+[node name="Card" instance=ExtResource("1_g2k01")]
+script = ExtResource("2_fwbl3")
