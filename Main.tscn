@@ -1,12 +1,57 @@
-[gd_scene load_steps=8 format=3 uid="uid://cb48luoaoyr4g"]
+[gd_scene load_steps=17 format=3 uid="uid://cb48luoaoyr4g"]
 
 [ext_resource type="Script" uid="uid://bvqmi68entsxf" path="res://main.gd" id="1_uu6xs"]
 [ext_resource type="Texture2D" uid="uid://dr1fnhnpyrvs" path="res://CardImages/Background.png" id="2_r0du0"]
 [ext_resource type="Script" uid="uid://w2v3i1xt3stj" path="res://popup_panel.gd" id="2_uu6xs"]
 [ext_resource type="Texture2D" uid="uid://bb65pca6bq03s" path="res://CardImages/Base Indicator.png" id="4_3dxm6"]
-[ext_resource type="Texture2D" uid="uid://ch4vy33j01n3m" path="res://CardImages/Base.png" id="5_lgr22"]
-[ext_resource type="Texture2D" uid="uid://ctenr74bro24c" path="res://CardImages/HomeBase.png" id="6_trn2v"]
-[ext_resource type="Texture2D" uid="uid://2qmkaltli438" path="res://CardImages/BatSideCollumn.png" id="7_lgr22"]
+[ext_resource type="Script" uid="uid://c1ohml8dv1cvu" path="res://at_bat_info.gd" id="4_trn2v"]
+[ext_resource type="Texture2D" uid="uid://cvu0mgkeyfhsb" path="res://CardImages/lightWhite.png" id="7_lgr22"]
+[ext_resource type="Script" uid="uid://x5qtjhvdsd03" path="res://scores.gd" id="8_20pc6"]
+[ext_resource type="Texture2D" uid="uid://cif0v4oui0rb4" path="res://CardImages/Lose.png" id="8_trn2v"]
+[ext_resource type="Script" uid="uid://bnef542n2gtll" path="res://runner_running.gd" id="9_03owx"]
+[ext_resource type="StyleBox" uid="uid://dip4mrx7ptltq" path="res://TeamBox.tres" id="9_5vvyt"]
+[ext_resource type="FontFile" uid="uid://dmn8wg8tb8exk" path="res://CardImages/Jersey15-Regular.ttf" id="10_c6i3y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c2ibq"]
+bg_color = Color(0, 0.217153, 0.480772, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.830012, 0.654651, 0.594418, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4qnp"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="FontFile" id="FontFile_fpfj3"]
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/28/0/ascent = 0.0
+cache/0/28/0/descent = 0.0
+cache/0/28/0/underline_position = 0.0
+cache/0/28/0/underline_thickness = 0.0
+cache/0/28/0/scale = 1.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_sc1dx"]
+font = SubResource("FontFile_fpfj3")
+font_size = 28
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjvhd"]
+bg_color = Color(0.85098, 0.215686, 0.364706, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -26,6 +71,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="GameArea"]
+z_index = -11
 custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 0
 offset_right = 40.0
@@ -129,21 +175,29 @@ expand_mode = 1
 [node name="Bases" type="Node2D" parent="."]
 position = Vector2(2227, 206)
 
-[node name="FirstBase" type="Sprite2D" parent="Bases"]
+[node name="FirstBase" type="Node2D" parent="Bases"]
 position = Vector2(-394, 13)
-texture = ExtResource("5_lgr22")
 
-[node name="SecondBase" type="Sprite2D" parent="Bases"]
+[node name="RunnerSpot" type="Marker2D" parent="Bases/FirstBase"]
+position = Vector2(15, -20)
+
+[node name="SecondBase" type="Node2D" parent="Bases"]
 position = Vector2(-507, -95)
-texture = ExtResource("5_lgr22")
 
-[node name="ThirdBase" type="Sprite2D" parent="Bases"]
+[node name="RunnerSpot" type="Marker2D" parent="Bases/SecondBase"]
+position = Vector2(-38, -11)
+
+[node name="ThirdBase" type="Node2D" parent="Bases"]
 position = Vector2(-622, 15)
-texture = ExtResource("5_lgr22")
 
-[node name="HomeBase" type="Sprite2D" parent="Bases"]
+[node name="RunnerSpot" type="Marker2D" parent="Bases/ThirdBase"]
+position = Vector2(6, 24)
+
+[node name="HomeBase" type="Node2D" parent="Bases"]
 position = Vector2(-505, 141)
-texture = ExtResource("6_trn2v")
+
+[node name="RunnerSpot" type="Marker2D" parent="Bases/HomeBase"]
+position = Vector2(25, -4)
 
 [node name="FirstColor" type="ColorRect" parent="Bases"]
 offset_left = -400.0
@@ -180,12 +234,6 @@ offset_top = 83.0
 offset_right = 988.0
 offset_bottom = 106.0
 
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 0
-offset_right = 290.0
-offset_bottom = 1080.0
-texture = ExtResource("7_lgr22")
-
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 907.702
@@ -199,10 +247,11 @@ fit_content = true
 
 [node name="SwingGrid" type="GridContainer" parent="."]
 custom_minimum_size = Vector2(240, 360)
-offset_left = 1166.0
-offset_top = 18.0
-offset_right = 1429.0
-offset_bottom = 386.0
+layout_mode = 0
+offset_left = 295.0
+offset_top = 186.0
+offset_right = 558.0
+offset_bottom = 554.0
 columns = 3
 
 [node name="topLeft" type="ColorRect" parent="SwingGrid"]
@@ -259,4 +308,189 @@ layout_mode = 2
 mouse_filter = 2
 color = Color(0.686275, 0.686275, 0.686275, 1)
 
-[connection signal="pressed" from="InfoPanel/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[node name="Runners" type="Node2D" parent="."]
+
+[node name="RunnerRunning" type="Node2D" parent="."]
+position = Vector2(2227, 204)
+script = ExtResource("9_03owx")
+
+[node name="ScoreBug" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1091.0
+offset_top = 3.0
+offset_right = 1405.0
+offset_bottom = 150.0
+scale = Vector2(1.26201, 1.26844)
+
+[node name="AtBatInfo" type="VBoxContainer" parent="ScoreBug"]
+layout_mode = 2
+offset_right = 291.0
+offset_bottom = 83.0
+script = ExtResource("4_trn2v")
+
+[node name="OutsGroup" type="HBoxContainer" parent="ScoreBug/AtBatInfo"]
+layout_mode = 2
+
+[node name="OutsLabel" type="RichTextLabel" parent="ScoreBug/AtBatInfo/OutsGroup"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "Outs"
+
+[node name="TextureRect" type="TextureRect" parent="ScoreBug/AtBatInfo/OutsGroup"]
+layout_mode = 2
+texture = ExtResource("7_lgr22")
+
+[node name="TextureRect2" type="TextureRect" parent="ScoreBug/AtBatInfo/OutsGroup"]
+layout_mode = 2
+texture = ExtResource("7_lgr22")
+
+[node name="TextureRect3" type="TextureRect" parent="ScoreBug/AtBatInfo/OutsGroup"]
+layout_mode = 2
+texture = ExtResource("7_lgr22")
+
+[node name="BallGroup" type="HBoxContainer" parent="ScoreBug/AtBatInfo"]
+layout_mode = 2
+
+[node name="StrikesLabel" type="RichTextLabel" parent="ScoreBug/AtBatInfo/BallGroup"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "Balls
+"
+
+[node name="TextureRect" type="TextureRect" parent="ScoreBug/AtBatInfo/BallGroup"]
+layout_mode = 2
+texture = ExtResource("7_lgr22")
+
+[node name="TextureRect2" type="TextureRect" parent="ScoreBug/AtBatInfo/BallGroup"]
+layout_mode = 2
+texture = ExtResource("7_lgr22")
+
+[node name="TextureRect3" type="TextureRect" parent="ScoreBug/AtBatInfo/BallGroup"]
+layout_mode = 2
+texture = ExtResource("7_lgr22")
+
+[node name="TextureRect4" type="TextureRect" parent="ScoreBug/AtBatInfo/BallGroup"]
+layout_mode = 2
+texture = ExtResource("7_lgr22")
+
+[node name="StrikeGroup" type="HBoxContainer" parent="ScoreBug/AtBatInfo"]
+layout_mode = 2
+
+[node name="StrikesLabel" type="RichTextLabel" parent="ScoreBug/AtBatInfo/StrikeGroup"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "Strikes
+"
+
+[node name="TextureRect" type="TextureRect" parent="ScoreBug/AtBatInfo/StrikeGroup"]
+layout_mode = 2
+texture = ExtResource("7_lgr22")
+
+[node name="TextureRect2" type="TextureRect" parent="ScoreBug/AtBatInfo/StrikeGroup"]
+layout_mode = 2
+texture = ExtResource("7_lgr22")
+
+[node name="TextureRect3" type="TextureRect" parent="ScoreBug/AtBatInfo/StrikeGroup"]
+layout_mode = 2
+texture = ExtResource("7_lgr22")
+
+[node name="BlueBackground" type="Panel" parent="ScoreBug"]
+z_index = -4
+layout_mode = 0
+offset_left = -0.792482
+offset_top = -2.3651
+offset_right = 311.208
+offset_bottom = 140.635
+scale = Vector2(1.09313, 1.03298)
+theme_override_styles/panel = SubResource("StyleBoxFlat_c2ibq")
+
+[node name="Scores" type="VBoxContainer" parent="ScoreBug"]
+layout_mode = 0
+offset_left = 194.927
+offset_top = -1.57674
+offset_right = 338.927
+offset_bottom = 142.423
+script = ExtResource("8_20pc6")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScoreBug/Scores"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="ScoreBug/Scores/HBoxContainer"]
+z_index = -1
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("9_5vvyt")
+
+[node name="Score" type="Label" parent="ScoreBug/Scores/HBoxContainer/Panel"]
+custom_minimum_size = Vector2(70, 70)
+theme_override_fonts/font = ExtResource("10_c6i3y")
+theme_override_font_sizes/font_size = 26
+text = "US"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel2" type="Panel" parent="ScoreBug/Scores/HBoxContainer"]
+z_index = -1
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_j4qnp")
+
+[node name="Number" type="Label" parent="ScoreBug/Scores/HBoxContainer/Panel2"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+offset_left = 0.601379
+offset_top = 1.15347
+offset_right = 50.6014
+offset_bottom = 51.1535
+theme_override_fonts/font = ExtResource("10_c6i3y")
+text = "0"
+label_settings = SubResource("LabelSettings_sc1dx")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ScoreBug/Scores"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="ScoreBug/Scores/HBoxContainer2"]
+z_index = -1
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kjvhd")
+
+[node name="Score" type="Label" parent="ScoreBug/Scores/HBoxContainer2/Panel"]
+custom_minimum_size = Vector2(70, 70)
+theme_override_fonts/font = ExtResource("10_c6i3y")
+theme_override_font_sizes/font_size = 26
+text = "Them"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel2" type="Panel" parent="ScoreBug/Scores/HBoxContainer2"]
+z_index = -1
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_j4qnp")
+
+[node name="Number" type="Label" parent="ScoreBug/Scores/HBoxContainer2/Panel2"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+offset_left = 0.601379
+offset_top = 1.15347
+offset_right = 50.6014
+offset_bottom = 51.1535
+theme_override_fonts/font = ExtResource("10_c6i3y")
+text = "0"
+label_settings = SubResource("LabelSettings_sc1dx")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Lose" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_top = -7.0
+offset_right = 800.0
+offset_bottom = 893.0
+texture = ExtResource("8_trn2v")
+
+[connection signal="button_up" from="InfoPanel/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="button_up" from="InfoPanel/VBoxContainer/DiscardButton" to="." method="takePitchPressed"]
