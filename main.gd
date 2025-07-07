@@ -4,11 +4,28 @@ var lockInteraction = false
 var CardScene = preload("res://Card.tscn")
 var CardHolderScene = preload("res://CardHolder.tscn")
 var ContactCardScene = preload("res://Cards/ContactCard.tscn")
+var PowerCardScene = preload("res://Cards/PowerCard.tscn")
+var ShuffleCardScene = preload("res://Cards/shuffleCard.tscn")
+var BallScene = preload("res://Ball.tscn")
 var handSize = 5
 var playerhand
+var active_ball: Node2D = null
+var die1Minimum = 0
+var die2Minimum = 0
+var die1Maximum = 6
+var die2Maximum = 6
+var die1MinimumTempIncrease = 0
+var die2MinimumTempIncrease = 0
+var die1MaximumTempIncrease = 0
+var die2MaximumTempIncrease = 0
 @onready var main_swing_grid = $SwingGrid
 @onready var atBatinfo = $ScoreBug/AtBatInfo
 @onready var scoreInfo = $ScoreBug/Scores
+@onready var die1 = $Die1
+@onready var die2 = $Die2
+
+var zonePositions := {}
+
 var hitTypeColors := {
 	"Neutral": Color("gray"),
 	"Single": Color("#1EFF00"),
@@ -54,14 +71,24 @@ func _ready():
 	draw_cards(handSize)
 	atBatinfo.setup()
 	scoreInfo.set_target_score(15)
-	for i in range(9):
-		main_swing_grid.get_child(i).color = Color("gray")
-	# Preload your runner sprite scene (e.g., a RunnerRunning.tscn)
 
 	for i in range(4):
 		var runner = runner_scene.instantiate()
 		$Runners.add_child(runner)
 		runner_pool.append(runner)
+		
+	await get_tree().process_frame
+	for child in $SwingGrid.get_children():
+		child.color = Color("gray")
+		print(child.name, ' child.name.is_valid_int() ', child.name.is_valid_int())
+		if child.name.is_valid_int():
+			var roll = child.name.to_int()
+			var center = Vector2.ZERO
+
+			center = child.global_position + child.size / 2
+
+			zonePositions[roll] = center
+	print("zonePositions: ", zonePositions)
 		
 func draw_cards(amount: int):
 	for i in range(amount):
@@ -95,7 +122,7 @@ func grey_out_bases():
 		tweentoGrey.tween_property(bases[i], "modulate", Color(0.5, 0.5, 0.5, 1.0), time)
 		
 func buildStarterDeck():
-	for i in range(40):
+	for i in range(20):
 		var card = ContactCardScene.instantiate()
 		card.connect("show_popup", Callable($InfoPopup, "show_info"))
 		card.connect("hide_popup", Callable($InfoPopup, "hide_info"))
@@ -106,13 +133,51 @@ func buildStarterDeck():
 		"coloredZones": zoneWithHitType
 		}
 		deck.append(card_entry)
+	for i in range(10):
+		var card = PowerCardScene.instantiate()
+		card.connect("show_popup", Callable($InfoPopup, "show_info"))
+		card.connect("hide_popup", Callable($InfoPopup, "hide_info"))
+		card.connect("card_selected", Callable(self, "update_main_swing_grid"))
+		var zoneWithHitType = card.create_card()
+		var card_entry = {
+		"cardObject": card,
+		"coloredZones": zoneWithHitType
+		}
+		deck.append(card_entry)
+	for i in range(10):
+		var card = ShuffleCardScene.instantiate()
+		card.connect("show_popup", Callable($InfoPopup, "show_info"))
+		card.connect("hide_popup", Callable($InfoPopup, "hide_info"))
+		card.connect("card_selected", Callable(self, "update_main_swing_grid"))
+		var zoneWithHitType = card.create_card()
+		var card_entry = {
+		"cardObject": card,
+		"coloredZones": zoneWithHitType
+		}
+		deck.append(card_entry)
+		
+func roll_dice_pair() -> int:
+	var die1min = die1Minimum + die1MinimumTempIncrease
+	var die1max = die1Maximum + die1MaximumTempIncrease
+	var die2min = die2Minimum + die2MinimumTempIncrease
+	var die2max = die2Maximum + die2MaximumTempIncrease
+	var die1Roll = randi_range(die1min, die1max)
+	var die2Roll = randi_range(die2Minimum, die2Maximum)
 
+	die1.roll(die1Roll, die1min, die1max, 1.0)
+	die2.roll(die2Roll, die2min, die2max, 1.0)
+
+	await get_tree().create_timer(1.2).timeout
+
+	print("Dice landed on: ", die1Roll, " and ", die2Roll)
+	return die1Roll + die2Roll
 	
 func takePitchPressed() -> void:
 	if lockInteraction:
 		return
 	var selected_wrappers = []
-	var roll = randi_range(0, 12)
+	var roll = await roll_dice_pair()
+	spawn_ball_at_zone(roll)
 	var playedCards = 0
 	for child in playerhand.get_children():
 		for card in child.get_children():
@@ -136,16 +201,17 @@ func takePitchPressed() -> void:
 		advance_runnersWalk(1)
 		lockInteraction = true
 		atBatinfo.update_lights(atBatinfo.getOutsLights(), 0, 0)
-		lockInteraction = false
 		
 	clear_swing_zone()
 	draw_cards(playedCards)
+	lockInteraction = false
 	
 func _on_play_button_pressed() -> void:
 	if lockInteraction:
 		return
 	var selected_wrappers = []
-	var roll = randi_range(0, 12)
+	var roll = await roll_dice_pair()
+	spawn_ball_at_zone(roll)
 	print(roll, " rolled")
 	var hit = false
 	var base
@@ -369,5 +435,31 @@ func _animate_runner_to_next_base(runner: Node2D, path: Array, finalBase: int):
 
 func _on_runner_arrived(runner: Node2D, path: Array, finalBase):
 	_animate_runner_to_next_base(runner, path, finalBase)
+	
+	
+func spawn_ball_at_zone(roll: int):
+	if active_ball:
+		active_ball.queue_free()
+		active_ball = null
+	var ball = BallScene.instantiate()
+	add_child(ball)
+	active_ball = ball
+	var target_pos: Vector2
+	var center_screen = get_viewport().get_visible_rect().size / 2
+	
+	if roll in zonePositions:
+		target_pos = zonePositions[roll]
+	else:
+		# Get top and bottom reference from valid zones
+		var top = zonePositions[1]  # top-middle
+		var bottom = zonePositions[7]  # bottom-middle
+
+		if roll > 8:
+			target_pos = bottom + Vector2(0, 100)  # 100px below
+		elif roll < 0:
+			target_pos = top - Vector2(0, 100)     # 100px above
+			
+	ball.start_animation(center_screen, target_pos)
+	
 	
 	

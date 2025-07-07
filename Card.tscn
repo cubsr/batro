@@ -115,7 +115,7 @@ offset_bottom = 35.0
 label_settings = ExtResource("2_hael8")
 horizontal_alignment = 1
 
-[node name="Description" type="Label" parent="."]
+[node name="DescriptionWithGrid" type="Label" parent="."]
 visible = false
 z_index = 1
 layout_mode = 2
@@ -124,6 +124,14 @@ offset_top = 65.0
 offset_right = 188.0
 offset_bottom = 151.0
 label_settings = ExtResource("2_hael8")
+
+[node name="FullCardDescription" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 1.0
+offset_top = 51.0
+offset_right = 199.0
+offset_bottom = 284.0
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

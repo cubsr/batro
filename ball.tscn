@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bm5povqdt6sqq"]
+
+[ext_resource type="Script" uid="uid://cwqj4r1cki05" path="res://ball.gd" id="1_x8fbi"]
+[ext_resource type="Texture2D" uid="uid://bjfrsq8odoxu3" path="res://CardImages/baseball.png" id="2_41u45"]
+
+[node name="Ball" type="Node2D"]
+position = Vector2(-2, 0)
+script = ExtResource("1_x8fbi")
+
+[node name="ballImage" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_41u45")

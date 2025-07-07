@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cb48luoaoyr4g"]
+[gd_scene load_steps=20 format=3 uid="uid://cb48luoaoyr4g"]
 
 [ext_resource type="Script" uid="uid://bvqmi68entsxf" path="res://main.gd" id="1_uu6xs"]
 [ext_resource type="Texture2D" uid="uid://dr1fnhnpyrvs" path="res://CardImages/Background.png" id="2_r0du0"]
@@ -11,6 +11,9 @@
 [ext_resource type="Script" uid="uid://bnef542n2gtll" path="res://runner_running.gd" id="9_03owx"]
 [ext_resource type="StyleBox" uid="uid://dip4mrx7ptltq" path="res://TeamBox.tres" id="9_5vvyt"]
 [ext_resource type="FontFile" uid="uid://dmn8wg8tb8exk" path="res://CardImages/Jersey15-Regular.ttf" id="10_c6i3y"]
+[ext_resource type="PackedScene" uid="uid://cibenp5oy3sib" path="res://dice.tscn" id="12_c2ibq"]
+[ext_resource type="StyleBox" uid="uid://c3iii8754ytbu" path="res://DicePanel.tres" id="13_j4qnp"]
+[ext_resource type="FontFile" uid="uid://b4rg2idw2w0gf" path="res://CardImages/Doto/Doto-VariableFont_ROND,wght.ttf" id="14_fpfj3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c2ibq"]
 bg_color = Color(0, 0.217153, 0.480772, 1)
@@ -254,55 +257,55 @@ offset_right = 558.0
 offset_bottom = 554.0
 columns = 3
 
-[node name="topLeft" type="ColorRect" parent="SwingGrid"]
+[node name="0" type="ColorRect" parent="SwingGrid"]
 custom_minimum_size = Vector2(80, 120)
 layout_mode = 2
 mouse_filter = 2
 color = Color(0.687215, 0.687215, 0.687215, 1)
 
-[node name="topMiddle" type="ColorRect" parent="SwingGrid"]
+[node name="1" type="ColorRect" parent="SwingGrid"]
 custom_minimum_size = Vector2(80, 30)
 layout_mode = 2
 mouse_filter = 2
 color = Color(0.686275, 0.686275, 0.686275, 1)
 
-[node name="topRight" type="ColorRect" parent="SwingGrid"]
+[node name="2" type="ColorRect" parent="SwingGrid"]
 custom_minimum_size = Vector2(80, 30)
 layout_mode = 2
 mouse_filter = 2
 color = Color(0.686275, 0.686275, 0.686275, 1)
 
-[node name="midLeft" type="ColorRect" parent="SwingGrid"]
+[node name="3" type="ColorRect" parent="SwingGrid"]
 custom_minimum_size = Vector2(30, 120)
 layout_mode = 2
 mouse_filter = 2
 color = Color(0.686275, 0.686275, 0.686275, 1)
 
-[node name="midMid" type="ColorRect" parent="SwingGrid"]
+[node name="4" type="ColorRect" parent="SwingGrid"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 mouse_filter = 2
 color = Color(0.686275, 0.686275, 0.686275, 1)
 
-[node name="midRight" type="ColorRect" parent="SwingGrid"]
+[node name="5" type="ColorRect" parent="SwingGrid"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 mouse_filter = 2
 color = Color(0.686275, 0.686275, 0.686275, 1)
 
-[node name="botLeft" type="ColorRect" parent="SwingGrid"]
+[node name="6" type="ColorRect" parent="SwingGrid"]
 custom_minimum_size = Vector2(30, 120)
 layout_mode = 2
 mouse_filter = 2
 color = Color(0.686275, 0.686275, 0.686275, 1)
 
-[node name="botMid" type="ColorRect" parent="SwingGrid"]
+[node name="7" type="ColorRect" parent="SwingGrid"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 mouse_filter = 2
 color = Color(0.686275, 0.686275, 0.686275, 1)
 
-[node name="botRight" type="ColorRect" parent="SwingGrid"]
+[node name="8" type="ColorRect" parent="SwingGrid"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 mouse_filter = 2
@@ -423,6 +426,7 @@ theme_override_styles/panel = ExtResource("9_5vvyt")
 
 [node name="Score" type="Label" parent="ScoreBug/Scores/HBoxContainer/Panel"]
 custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
 theme_override_fonts/font = ExtResource("10_c6i3y")
 theme_override_font_sizes/font_size = 26
 text = "US"
@@ -459,6 +463,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_kjvhd")
 
 [node name="Score" type="Label" parent="ScoreBug/Scores/HBoxContainer2/Panel"]
 custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
 theme_override_fonts/font = ExtResource("10_c6i3y")
 theme_override_font_sizes/font_size = 26
 text = "Them"
@@ -491,6 +496,39 @@ offset_top = -7.0
 offset_right = 800.0
 offset_bottom = 893.0
 texture = ExtResource("8_trn2v")
+
+[node name="Die1" parent="." instance=ExtResource("12_c2ibq")]
+layout_mode = 1
+offset_left = 455.0
+offset_top = 1.0
+offset_right = -1425.0
+offset_bottom = -1039.0
+
+[node name="Die2" parent="." instance=ExtResource("12_c2ibq")]
+layout_mode = 1
+offset_left = 570.0
+offset_top = 2.0
+offset_right = -1310.0
+offset_bottom = -1038.0
+
+[node name="PlusSign" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 513.0
+offset_top = 1.0
+offset_right = 553.0
+offset_bottom = 41.0
+theme_override_styles/panel = ExtResource("13_j4qnp")
+
+[node name="Label" type="Label" parent="PlusSign"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("14_fpfj3")
+theme_override_font_sizes/font_size = 30
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="button_up" from="InfoPanel/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="button_up" from="InfoPanel/VBoxContainer/DiscardButton" to="." method="takePitchPressed"]

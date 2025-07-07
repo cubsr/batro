@@ -17,6 +17,8 @@ var normal_scale = Vector2(1, 1)
 var lift_offset = Vector2(0, -20)
 var original_position = Vector2()
 var is_selected = false
+var hasDiscardEffect = false
+
 signal card_selected()
 
 
@@ -30,11 +32,18 @@ func _ready():
 	update_ui()
 
 
-func set_card_data(inputTitle: String, inputDesc: String, zoneWithRarity: Dictionary) -> void:
+func set_card_data(inputTitle: String, zoneWithRarity: Dictionary, cardDescription: String = '') -> void:
 	title = inputTitle
-	description = inputDesc
 	if !zoneWithRarity.is_empty():
 		highlight_zones(zoneWithRarity)
+		if cardDescription and cardDescription != '':
+			$DescriptionWithGrid.visible = true
+			$DescriptionWithGrid.text = cardDescription
+	else:
+		swing_grid.visible = false
+		if cardDescription and cardDescription != '':
+			$FullCardDescription.visible = true
+			$FullCardDescription.text = cardDescription
 	update_ui()
 	
 func apply_zone_colors(zoneWithRarity: Dictionary) -> void:
@@ -52,7 +61,7 @@ func _on_mouse_entered():
 	hovered.kill()
 	hovered = get_tree().create_tween()
 	hovered.tween_property(self, "scale", hovered_scale, 0.15)
-	emit_signal("show_popup", titleLable.text, desc.text, get_screen_position() + Vector2(0, -100))
+	#emit_signal("show_popup", titleLable.text, desc.text, get_screen_position() + Vector2(0, -100))
 
 func _on_mouse_exited():
 	hovered.kill()

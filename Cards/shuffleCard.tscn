@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bk6uouds4asju"]
+
+[ext_resource type="PackedScene" uid="uid://rrcsvv2vp447" path="res://Card.tscn" id="1_jhbi4"]
+[ext_resource type="Script" uid="uid://3ws2oop2bmb4" path="res://Cards/shuffle_card.gd" id="2_58sop"]
+
+[node name="ShuffleCard" instance=ExtResource("1_jhbi4")]
+script = ExtResource("2_58sop")
+die_node_path = NodePath("")
+roll_increase = 0
