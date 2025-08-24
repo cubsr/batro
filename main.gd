@@ -7,6 +7,7 @@ var ContactCardScene = preload("res://Cards/ContactCard.tscn")
 var PowerCardScene = preload("res://Cards/PowerCard.tscn")
 var ShuffleCardScene = preload("res://Cards/shuffleCard.tscn")
 var BallScene = preload("res://Ball.tscn")
+var StealScene = preload("res://Cards/Steal.tscn")
 var handSize = 5
 var playerhand
 var active_ball: Node2D = null
@@ -100,7 +101,8 @@ func draw_cards(amount: int):
 		var card = deck[0]["cardObject"]
 		holder.add_child(card)
 		playerhand.add_child(holder)
-		card.apply_zone_colors(deck[0]["coloredZones"])
+		if card.swing_grid.visible == true:
+			card.apply_zone_colors(deck[0]["coloredZones"])
 		discard.append(deck[0])
 		deck.remove_at(0)
 		
@@ -122,39 +124,36 @@ func grey_out_bases():
 		tweentoGrey.tween_property(bases[i], "modulate", Color(0.5, 0.5, 0.5, 1.0), time)
 		
 func buildStarterDeck():
-	for i in range(20):
-		var card = ContactCardScene.instantiate()
-		card.connect("show_popup", Callable($InfoPopup, "show_info"))
-		card.connect("hide_popup", Callable($InfoPopup, "hide_info"))
-		card.connect("card_selected", Callable(self, "update_main_swing_grid"))
-		var zoneWithHitType = card.create_card()
-		var card_entry = {
-		"cardObject": card,
-		"coloredZones": zoneWithHitType
-		}
-		deck.append(card_entry)
+	for i in range(25):
+		create_card_and_add(ContactCardScene)
+
+	for i in range(25):
+		create_card_and_add(PowerCardScene)
+
 	for i in range(10):
-		var card = PowerCardScene.instantiate()
-		card.connect("show_popup", Callable($InfoPopup, "show_info"))
-		card.connect("hide_popup", Callable($InfoPopup, "hide_info"))
-		card.connect("card_selected", Callable(self, "update_main_swing_grid"))
-		var zoneWithHitType = card.create_card()
-		var card_entry = {
-		"cardObject": card,
-		"coloredZones": zoneWithHitType
-		}
-		deck.append(card_entry)
+		create_card_and_add(ShuffleCardScene, [die1.get_path()])
+		
 	for i in range(10):
-		var card = ShuffleCardScene.instantiate()
-		card.connect("show_popup", Callable($InfoPopup, "show_info"))
-		card.connect("hide_popup", Callable($InfoPopup, "hide_info"))
-		card.connect("card_selected", Callable(self, "update_main_swing_grid"))
-		var zoneWithHitType = card.create_card()
-		var card_entry = {
+		create_card_and_add(StealScene, [self])
+		
+		
+func create_card_and_add(scene: PackedScene, extra_args := []) -> void:
+	var card = scene.instantiate()
+	card.connect("show_popup", Callable($InfoPopup, "show_info"))
+	card.connect("hide_popup", Callable($InfoPopup, "hide_info"))
+	card.connect("card_selected", Callable(self, "update_main_swing_grid"))
+
+	var zoneWithHitType
+	if extra_args.size() > 0:
+		zoneWithHitType = card.create_card(extra_args[0])
+	else:
+		zoneWithHitType = card.create_card()
+
+	var card_entry = {
 		"cardObject": card,
 		"coloredZones": zoneWithHitType
-		}
-		deck.append(card_entry)
+	}
+	deck.append(card_entry)
 		
 func roll_dice_pair() -> int:
 	var die1min = die1Minimum + die1MinimumTempIncrease
@@ -176,18 +175,20 @@ func takePitchPressed() -> void:
 	if lockInteraction:
 		return
 	var selected_wrappers = []
-	var roll = await roll_dice_pair()
-	spawn_ball_at_zone(roll)
 	var playedCards = 0
 	for child in playerhand.get_children():
 		for card in child.get_children():
 			if card.is_selected:
+				if card.hasDiscardEffect:
+					card.apply_discard_effect()
 				playedCards = playedCards + 1
 				var wrapper = card.get_parent()
 				selected_wrappers.append(wrapper)
 	for wrapper in selected_wrappers:
 		playerhand.remove_child(wrapper)
 		wrapper.queue_free()
+	var roll = await roll_dice_pair()
+	spawn_ball_at_zone(roll)
 	if roll < 9:
 		atBatinfo.add_strike()
 	else:
@@ -267,6 +268,7 @@ func update_base_visuals():
 			
 		
 func update_main_swing_grid():
+	
 	# Reset all zones to gray
 	for i in range(9):
 		main_swing_grid.get_child(i).color = Color("gray")
@@ -280,10 +282,11 @@ func update_main_swing_grid():
 	for child in playerhand.get_children():
 		for card in child.get_children():
 			if card.is_selected:
-				var card_colors = card.zonesHits
-				for index in card_colors.keys():
-					var hit_type = card_colors[index]
-					summed_colors[index] = summed_colors[index] + hitTypestoNumber[hit_type]
+				if card.swing_grid.visible == true:
+					var card_colors = card.zonesHits
+					for index in card_colors.keys():
+						var hit_type = card_colors[index]
+						summed_colors[index] = summed_colors[index] + hitTypestoNumber[hit_type]
 	
 	# Clean up data
 	for i in range(9):
@@ -342,6 +345,16 @@ func advance_runnersWalk(amount: int):
 
 	print("menOnBase after move: ", menOnBase)
 	update_base_visuals() 
+	
+func advance_runners_no_hit(advanceAmount : int = 1):
+
+	for i in range(2, -1, -1):  # Bases: 2=3rd, 1=2nd, 0=1st
+		var runner = runner_at_base[i]
+		if runner:
+			var target_base = i + advanceAmount
+			if target_base > 3:
+				target_base = 3
+			move_runner_between_bases(runner, i, i + 1)
 		
 func advance_runners(amount: int):
 	var runners_to_move = []

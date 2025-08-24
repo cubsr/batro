@@ -30,17 +30,21 @@ func _ready():
 	original_position = position
 	_init_zones()
 	update_ui()
+	
+func create_card(arg = null) -> Dictionary:
+	push_warning("BaseCard.create_card() called. You should override this in the derived class.")
+	return {}
 
 
 func set_card_data(inputTitle: String, zoneWithRarity: Dictionary, cardDescription: String = '') -> void:
 	title = inputTitle
-	if !zoneWithRarity.is_empty():
+	if zoneWithRarity != null and !zoneWithRarity.is_empty():
 		highlight_zones(zoneWithRarity)
 		if cardDescription and cardDescription != '':
 			$DescriptionWithGrid.visible = true
 			$DescriptionWithGrid.text = cardDescription
 	else:
-		swing_grid.visible = false
+		$SwingGrid.visible = false
 		if cardDescription and cardDescription != '':
 			$FullCardDescription.visible = true
 			$FullCardDescription.text = cardDescription

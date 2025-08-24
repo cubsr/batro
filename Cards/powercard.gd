@@ -5,7 +5,7 @@ var zonesHits: Dictionary = {}
 func _ready():
 	super._ready()
 
-func create_card() -> Dictionary:
+func create_card(arg = null) -> Dictionary:
 	var zonesWithHitTypes := {}
 	var titleString = "Power Swing"
 	var center = randi() % 9
